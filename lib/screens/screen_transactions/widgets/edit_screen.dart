@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:week5/db/category/category_db.dart';
+import 'package:provider/provider.dart';
 import 'package:week5/db/transactions/transaction_db.dart';
 import 'package:week5/models/category/category_model.dart';
 import 'package:week5/models/transaction/transaction_model.dart';
+import 'package:week5/provider/category_provider.dart';
+import 'package:week5/provider/transaction_provider.dart';
 import 'package:week5/screens/transaction_adding_screen/widget.dart/app_drop_down.dart';
 import 'package:week5/screens/transaction_adding_screen/widget.dart/date_form_field.dart';
 import 'package:week5/widgets/app_button.dart';
@@ -50,7 +52,7 @@ class _EditScreenState extends State<EditScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-       backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Theme.of(context).primaryColor,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -166,8 +168,17 @@ class _EditScreenState extends State<EditScreen> {
 
   List<CategoryModel> getCategoryList() {
     return currentType == "income"
-        ? CategoryDb.instance.incomeCategoryList.value.toSet().toList()
-        : CategoryDb.instance.expenseCategoryList.value.toSet().toList();
+        ? Provider.of<CategoryProvider>(context)
+            .incomeCategoryList
+            .toSet()
+            .toList()
+        : Provider.of<CategoryProvider>(context)
+            .expenseCategoryList
+            .toSet()
+            .toList();
+
+    // ? CategoryDb.instance.incomeCategoryList.value.toSet().toList()
+    // : CategoryDb.instance.expenseCategoryList.value.toSet().toList();
   }
 
   void selectDate(BuildContext context) async {
@@ -223,7 +234,12 @@ class _EditScreenState extends State<EditScreen> {
       );
       await TransactionDb.instance
           .editTransactionSample(transaction, oldTransactionModel);
-      Navigator.of(context).pop();
+      Provider.of<TransactionProvider>(context, listen: false)
+          .refreshTransaction();
+
+      if (mounted) {
+        Navigator.of(context).pop();
+      }
     }
   }
 }

@@ -1,8 +1,8 @@
-import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:week5/models/category/category_model.dart';
 
 const categoryDbName = "categorydbname";
+
 abstract class CategoryDbFunction {
   Future<List<CategoryModel>> getCategories();
   Future<void> insertCatogory(CategoryModel value);
@@ -10,8 +10,7 @@ abstract class CategoryDbFunction {
 }
 
 class CategoryDb implements CategoryDbFunction {
-  ValueNotifier<List<CategoryModel>> incomeCategoryList = ValueNotifier([]);
-  ValueNotifier<List<CategoryModel>> expenseCategoryList = ValueNotifier([]);
+  
 
   CategoryDb.internal();
   static CategoryDb instance = CategoryDb.internal();
@@ -31,22 +30,9 @@ class CategoryDb implements CategoryDbFunction {
     await refreshUi();
   }
 
-  Future<void> refreshUi() async {
+  Future<List> refreshUi() async {
     final allCategories = await getCategories();
-    incomeCategoryList.value.clear();
-    expenseCategoryList.value.clear();
-    await Future.forEach(
-      allCategories,
-      (CategoryModel category) {
-        if (category.type == CategoryType.income) {
-          incomeCategoryList.value.add(category);
-        } else {
-          expenseCategoryList.value.add(category);
-        }
-      },
-    );
-    incomeCategoryList.notifyListeners();
-    expenseCategoryList.notifyListeners();
+    return allCategories;
   }
 
   @override

@@ -32,10 +32,11 @@ class AleartDialougeWidget extends StatelessWidget {
               child: const Text("Yes"),
             ),
             TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text("No"))
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text("No"),
+            )
           ],
         )
       ],

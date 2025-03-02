@@ -6,7 +6,7 @@ import 'package:week5/screens/screen_category/widget/delete_category_popup.dart'
 
 class Categories extends StatelessWidget {
   Categories({super.key, required this.categoriesList, this.function});
-  ValueNotifier<List<CategoryModel>> categoriesList = ValueNotifier([]);
+List<CategoryModel> categoriesList = [];
   final Function? function;
 
   @override
@@ -16,11 +16,11 @@ class Categories extends StatelessWidget {
       child: GridView.builder(
         shrinkWrap: true,
         physics: const ScrollPhysics(),
-        itemCount: categoriesList.value.length,
+        itemCount: categoriesList.length,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3, crossAxisSpacing: 8, mainAxisSpacing: 8),
         itemBuilder: (ctx, index) {
-          final value = categoriesList.value[index];
+          final value = categoriesList[index];
           return GestureDetector(
             onLongPress: () {
               showDialog(

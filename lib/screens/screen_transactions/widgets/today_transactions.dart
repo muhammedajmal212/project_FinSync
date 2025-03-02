@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:week5/db/transactions/transaction_db.dart';
 import 'package:week5/models/category/category_model.dart';
 import 'package:week5/models/transaction/transaction_model.dart';
+import 'package:week5/provider/transaction_provider.dart';
 import 'package:week5/screens/screen_transactions/widgets/aleart_dialouge_widget.dart';
 import 'package:week5/screens/screen_transactions/widgets/edit_screen.dart';
 import 'package:week5/screens/screen_transactions/widgets/slide_widget.dart';
@@ -16,18 +18,17 @@ class TodayTransactions extends StatelessWidget {
     DateTime todayDate = DateTime.now();
     todayDate = DateTime(todayDate.year, todayDate.month, todayDate.day);
     List<TransactionModel> allTodayList = [];
-    return ValueListenableBuilder(
-      valueListenable: TransactionDb.instance.allTransactionList,
-      builder: (context, List<TransactionModel> transactions, _) {
-        if (isIncomeSelected == true) {
-          allTodayList = transactions.where(
+    return 
+    Consumer<TransactionProvider>(builder: (context, value, child) {
+       if (isIncomeSelected == true) {
+          allTodayList = value.allTransactionlist.where(
             (element) {
               return element.type == CategoryType.income &&
                   element.date == todayDate;
             },
           ).toList();
         } else {
-          allTodayList = transactions.where(
+          allTodayList = value.allTransactionlist.where(
             (element) {
               return element.type == CategoryType.expense &&
                   element.date == todayDate;
@@ -51,8 +52,8 @@ class TodayTransactions extends StatelessWidget {
             );
           },
         );
-      },
-    );
+    },);
+  
   }
 
   void editTodayFunction(TransactionModel transaction, BuildContext context) {
@@ -99,6 +100,7 @@ class TodayTransactions extends StatelessWidget {
           text: "Do you Want To Delete",
           transactionModel: transaction,
           functoin: () {
+             Provider.of<TransactionProvider>(context,listen: false).refreshTransaction();
             TransactionDb.instance.deleteTransation(transaction);
             Navigator.of(context).pop();
           },

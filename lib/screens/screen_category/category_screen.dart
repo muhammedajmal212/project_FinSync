@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:week5/db/category/category_db.dart';
 import 'package:week5/models/category/category_model.dart';
+import 'package:week5/provider/category_provider.dart';
 import 'package:week5/screens/screen_category/widget/alert_widget.dart';
 import 'package:week5/screens/screen_category/widget/categories.dart';
 import 'package:week5/widgets/add_button.dart';
@@ -23,6 +25,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   void initState() {
+    Provider.of<CategoryProvider>(context, listen: false).refreshCategory();
     super.initState();
     currentOption = options[0];
   }
@@ -36,13 +39,13 @@ class _CategoryScreenState extends State<CategoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:  Colors.white,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text(
           "Category Screen",
-          style:  TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.white),
         ),
-         backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Theme.of(context).primaryColor,
       ),
       body: Column(
         children: [
@@ -80,16 +83,13 @@ class _CategoryScreenState extends State<CategoryScreen> {
             ],
           ),
           Expanded(
-            child: ValueListenableBuilder<List<CategoryModel>>(
-              valueListenable: currentOption == options[0]
-                  ? CategoryDb.instance.incomeCategoryList
-                  : CategoryDb.instance.expenseCategoryList,
-              builder: (context, categories, child) {
-                return Categories(
-                  categoriesList: ValueNotifier(categories),
-                );
-              },
-            ),
+            child:
+                Consumer<CategoryProvider>(builder: (ctx, categoryconsumer, _) {
+              final vasu = currentOption == options[0]
+                  ? categoryconsumer.incomeCategoryList
+                  : categoryconsumer.expenseCategoryList;
+              return Categories(categoriesList: vasu);
+            }),
           ),
         ],
       ),
@@ -111,15 +111,16 @@ class _CategoryScreenState extends State<CategoryScreen> {
                   return "category canot be empty";
                 }
                 String categoryname = value.trim().toLowerCase();
-                final existingIncomeCategories = CategoryDb
-                    .instance.incomeCategoryList.value
-                    .map((e) => e.name)
-                    .toList();
+                final existingIncomeCategories =
+                    Provider.of<CategoryProvider>(context, listen: false)
+                        .incomeCategoryList
+                        .map((e) => e.name)
+                        .toList();
+
                 final existingExpenseCategories =
-                    CategoryDb.instance.expenseCategoryList.value
-                        .map(
-                          (e) => e.name,
-                        )
+                    Provider.of<CategoryProvider>(context, listen: false)
+                        .incomeCategoryList
+                        .map((e) => e.name)
                         .toList();
 
                 if (currentOption == options[0] &&
@@ -147,8 +148,10 @@ class _CategoryScreenState extends State<CategoryScreen> {
           type: currentOption == options[0]
               ? CategoryType.income
               : CategoryType.expense);
-      await CategoryDb().insertCatogory(newCategory);
+              Provider.of<CategoryProvider>(context,listen: false).addCategory(newCategory);
+      // await CategoryDb().insertCatogory(newCategory);
       categorycontroller.clear();
+      Provider.of<CategoryProvider>(context, listen: false).refreshCategory();
 
       Navigator.of(context).pop();
     }

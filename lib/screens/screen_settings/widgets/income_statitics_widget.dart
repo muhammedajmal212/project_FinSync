@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
-import 'package:week5/db/category/category_db.dart';
-import 'package:week5/db/transactions/transaction_db.dart';
+import 'package:provider/provider.dart';
+import 'package:week5/provider/category_provider.dart';
+import 'package:week5/provider/transaction_provider.dart';
 
 class IncomeStatiticsWidget extends StatefulWidget {
   const IncomeStatiticsWidget({super.key});
@@ -24,31 +25,28 @@ class _IncomeStatiticsWidgetState extends State<IncomeStatiticsWidget> {
       width: double.infinity,
       height: double.infinity,
       color: Colors.white,
-      child: CategoryDb.instance.incomeCategoryList.value.isNotEmpty
-          ? PieChart(
-            
-            gradientList: const [
-              [
-              Color.fromRGBO(27, 129, 224, 1),
-              Color.fromARGB(255, 220, 143, 255)
-              ],[Color.fromARGB(255, 22, 179, 194),
-              Color(0xFFC6A4E4)],[Color.fromARGB(255, 191, 77, 121),Color(0xFFFF7F50)]
-            ], dataMap: dataMap)
-          : const Center(
-              child: Text("Empty Data"),
-            ),
+      child:
+          Provider.of<CategoryProvider>(context).incomeCategoryList.isNotEmpty
+              // CategoryDb.instance.incomeCategoryList.value.isNotEmpty
+              ? PieChart(dataMap: dataMap)
+              : const Center(
+                  child: Text("Empty Data"),
+                ),
     );
   }
 
   void incomePieChartFunction() {
-    if (CategoryDb.instance.incomeCategoryList.value.isNotEmpty) {
+    if (Provider.of<CategoryProvider>(context,listen: false).incomeCategoryList.isNotEmpty
+        // CategoryDb.instance.incomeCategoryList.value.isNotEmpty
+        ) {
       for (int i = 0;
-          i < CategoryDb.instance.incomeCategoryList.value.length;
+          i < Provider.of<CategoryProvider>(context,listen: false).incomeCategoryList.length;
           i++) {
         final categoryName =
-            CategoryDb.instance.incomeCategoryList.value[i].name;
+            // CategoryDb.instance.incomeCategoryList.value[i].name;
+            Provider.of<CategoryProvider>(context,listen: false).incomeCategoryList[i].name;
         final transaction =
-            TransactionDb.instance.allTransactionList.value.where(
+            Provider.of<TransactionProvider>(context,listen: false).allTransactionlist.where(
           (element) {
             return element.categoryModel?.name == categoryName;
           },

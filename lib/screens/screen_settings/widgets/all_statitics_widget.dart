@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
-import 'package:week5/db/transactions/transaction_db.dart';
+import 'package:provider/provider.dart';
+import 'package:week5/provider/transaction_provider.dart';
 
 class AllStatiticsWidget extends StatefulWidget {
   const AllStatiticsWidget({super.key});
@@ -14,8 +15,10 @@ class _AllStatiticsWidgetState extends State<AllStatiticsWidget> {
   @override
   void initState() {
     dataMap = {
-      "Income": TransactionDb.instance.totalIncome.value.toDouble(),
-      "Expense": TransactionDb.instance.totalExpense.value.toDouble()
+      "Income":Provider.of<TransactionProvider>(context,listen: false).totalIncome.toDouble(),
+      "Expense":Provider.of<TransactionProvider>(context,listen: false).totalExpense.toDouble(),
+      // "Income": TransactionDb.instance.totalIncome.value.toDouble(),
+      // "Expense": TransactionDb.instance.totalExpense.value.toDouble()
     };
     super.initState();
   }
@@ -27,10 +30,7 @@ class _AllStatiticsWidgetState extends State<AllStatiticsWidget> {
       height: double.infinity,
       color: Colors.white,
       child: PieChart(
-          gradientList: const [
-            [Color.fromARGB(255, 162, 245, 129), Color.fromARGB(255, 47, 199, 219)],
-            [Colors.purple, Colors.teal]
-          ],
+        
           chartRadius: 250,
           animationDuration: const Duration(seconds: 2),
           chartValuesOptions: const ChartValuesOptions(

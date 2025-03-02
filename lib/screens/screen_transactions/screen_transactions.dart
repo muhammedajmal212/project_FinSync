@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:week5/screens/screen_transactions/widgets/transaction_tab_bar.dart';
-import 'package:week5/widgets/expense_text.dart';
-import 'package:week5/widgets/income_text.dart';
-
 class ScreenTransactions extends StatefulWidget {
   const ScreenTransactions({super.key});
 
@@ -15,15 +12,14 @@ class _ScreenTransactionsState extends State<ScreenTransactions> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-         backgroundColor:Colors.white,
+      backgroundColor: Colors.white,
       appBar: AppBar(
-      backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Theme.of(context).primaryColor,
         title: const Text(
           "Transactions",
-          style:  TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.white),
         ),
         elevation: 5,
-     
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -38,7 +34,19 @@ class _ScreenTransactionsState extends State<ScreenTransactions> {
                       isIncomeSelected = true;
                     });
                   },
-                  child: const IncomeText(),
+                  child: isIncomeSelected == true
+                      ? const Text(
+                          "Income",
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        )
+                      : const Text(
+                          "Income",
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey),
+                        ),
                 ),
                 GestureDetector(
                   onTap: () {
@@ -46,7 +54,19 @@ class _ScreenTransactionsState extends State<ScreenTransactions> {
                       isIncomeSelected = false;
                     });
                   },
-                  child: const ExpenseText(),
+                  child: isIncomeSelected == false
+                      ? const Text(
+                          "Expense",
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        )
+                      : const Text(
+                          "Expense",
+                          style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold),
+                        ),
                 ),
               ],
             ),

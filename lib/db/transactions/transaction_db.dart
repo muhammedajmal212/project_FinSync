@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:week5/models/category/category_model.dart';
 import 'package:week5/models/transaction/transaction_model.dart';
 
 const String transactionDbName = "TRANSACTION_DB_NAME";
@@ -15,10 +14,6 @@ abstract class TransactionDbFunctions {
 }
 
 class TransactionDb extends ChangeNotifier implements TransactionDbFunctions {
-  ValueNotifier<num> totalIncome = ValueNotifier(0);
-  ValueNotifier<num> totalExpense = ValueNotifier(0);
-  ValueNotifier<num> currentBalance = ValueNotifier(0);
-  ValueNotifier<List<TransactionModel>> allTransactionList = ValueNotifier([]);
   TransactionDb.internal();
   static TransactionDb instance = TransactionDb.internal();
   factory TransactionDb() {
@@ -46,25 +41,9 @@ class TransactionDb extends ChangeNotifier implements TransactionDbFunctions {
   }
 
   @override
-  Future<void> refreshUi() async {
+  Future<List<TransactionModel>> refreshUi() async {
     final allTransaction = await getAllTransactions();
-    allTransactionList.value.clear();
-    allTransactionList.value.addAll(allTransaction);
-    allTransactionList.notifyListeners();
-    totalIncome.value = 0;
-    totalExpense.value = 0;
-    currentBalance.value = 0;
-    for (int i = 0; i < allTransaction.length; i++) {
-      if (allTransaction[i].type == CategoryType.income) {
-        totalIncome.value = totalIncome.value + allTransaction[i].amount;
-      } else {
-        totalExpense.value = totalExpense.value + allTransaction[i].amount;
-      }
-    }
-    currentBalance.value = totalIncome.value - totalExpense.value;
-    totalIncome.notifyListeners();
-    totalExpense.notifyListeners();
-    currentBalance.notifyListeners();
+    return allTransaction;
   }
 
   @override

@@ -1,10 +1,12 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:week5/db/category/category_db.dart';
+import 'package:provider/provider.dart';
 import 'package:week5/db/transactions/transaction_db.dart';
 import 'package:week5/models/category/category_model.dart';
 import 'package:week5/models/transaction/transaction_model.dart';
+import 'package:week5/provider/category_provider.dart';
+import 'package:week5/provider/transaction_provider.dart';
 import 'package:week5/screens/transaction_adding_screen/widget.dart/app_drop_down.dart';
 import 'package:week5/screens/transaction_adding_screen/widget.dart/date_form_field.dart';
 import 'package:week5/widgets/app_button.dart';
@@ -92,10 +94,15 @@ class _TransactionAddingWidgetState extends State<TransactionAddingWidget> {
                 );
               },
               dropdownlist: currentvalue == "income"
-                  ? CategoryDb.instance.incomeCategoryList.value
+
+                  // ? CategoryDb.instance.incomeCategoryList.value
+                  ? Provider.of<CategoryProvider>(context, listen: false)
+                      .incomeCategoryList
                       .toSet()
                       .toList()
-                  : CategoryDb.instance.expenseCategoryList.value
+                  // : CategoryDb.instance.expenseCategoryList.value
+                  : Provider.of<CategoryProvider>(context, listen: false)
+                      .expenseCategoryList
                       .toSet()
                       .toList(),
               validatorKey: (value) {
@@ -115,7 +122,7 @@ class _TransactionAddingWidgetState extends State<TransactionAddingWidget> {
           Padding(
             padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
             child: AppTextFormField(
-              keyboardType: TextInputType.number,
+                keyboardType: TextInputType.number,
                 validatorKey: (value) {
                   if (value == null || value.isEmpty) {
                     return "Enter Amount";
@@ -201,13 +208,18 @@ class _TransactionAddingWidgetState extends State<TransactionAddingWidget> {
             ? CategoryType.income
             : CategoryType.expense,
       );
-      await TransactionDb.instance.addTransaction(transaction);
+      await Provider.of<TransactionProvider>(context,listen: false).addTransaction(transaction);
+      // await TransactionDb.instance.addTransaction(transaction);
       await TransactionDb.instance.refreshUi();
-      Navigator.of(context).pop();
+      Provider.of<TransactionProvider>(context, listen: false)
+          .refreshTransaction();
+      if (mounted) {
+        Navigator.of(context).pop();
+      }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          backgroundColor:const Color(0xFF80CBC4),
+          backgroundColor: const Color(0xFF80CBC4),
           content: const Text(
             "Please fix the errors in the form",
             style: TextStyle(color: Color(0xFF2F2F2F)),

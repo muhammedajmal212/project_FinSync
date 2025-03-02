@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
-import 'package:week5/db/category/category_db.dart';
-import 'package:week5/db/transactions/transaction_db.dart';
+import 'package:provider/provider.dart';
+import 'package:week5/provider/category_provider.dart';
+import 'package:week5/provider/transaction_provider.dart';
 
 class ExpenseStatiticsWidget extends StatefulWidget {
   const ExpenseStatiticsWidget({super.key});
@@ -24,23 +25,30 @@ class _ExpenseStatiticsWidgetState extends State<ExpenseStatiticsWidget> {
       width: double.infinity,
       height: double.infinity,
       color: Colors.white,
-      child: CategoryDb.instance.expenseCategoryList.value.isNotEmpty
-          ? PieChart(dataMap: dataMap)
-          : const Center(
-              child: Text("Empty Data"),
-            ),
+      child:
+          Provider.of<CategoryProvider>(context).expenseCategoryList.isNotEmpty
+              // CategoryDb.instance.expenseCategoryList.value.isNotEmpty
+              ? PieChart(dataMap: dataMap)
+              : const Center(
+                  child: Text("Empty Data"),
+                ),
     );
   }
 
   void expensePieChartFunction() {
-    if (CategoryDb.instance.expenseCategoryList.value.isNotEmpty) {
+    if (Provider.of<CategoryProvider>(context,listen: false).expenseCategoryList.isNotEmpty
+        // CategoryDb.instance.expenseCategoryList.isNotEmpty
+        ) {
       for (int i = 0;
-          i < CategoryDb.instance.expenseCategoryList.value.length;
+          i < Provider.of<CategoryProvider>(context,listen: false).expenseCategoryList.length;
+
+          //  CategoryDb.instance.expenseCategoryList.value.length;
           i++) {
         final categoryName =
-            CategoryDb.instance.expenseCategoryList.value[i].name;
+            Provider.of<CategoryProvider>(context,listen: false).expenseCategoryList[i].name;
+        // CategoryDb.instance.expenseCategoryList.value[i].name;
         final transaction =
-            TransactionDb.instance.allTransactionList.value.where(
+            Provider.of<TransactionProvider>(context,listen: false).allTransactionlist.where(
           (element) {
             return element.categoryModel?.name == categoryName;
           },

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:week5/db/transactions/transaction_db.dart';
-import 'package:week5/models/transaction/transaction_model.dart';
+import 'package:week5/provider/category_provider.dart';
+import 'package:week5/provider/transaction_provider.dart';
 import 'package:week5/screens/screen_home/widgets/total_income_expense_screen.dart';
 import 'package:week5/screens/transaction_adding_screen/transaction_adding_screen.dart';
 import 'package:week5/widgets/add_button.dart';
@@ -20,6 +21,9 @@ class _HomeScreenState extends State<HomeScreen> {
   String newName = "";
   @override
   void initState() {
+    Provider.of<TransactionProvider>(context, listen: false)
+        .refreshTransaction();
+    Provider.of<CategoryProvider>(context, listen: false).refreshCategory();
     getUsername();
     super.initState();
   }
@@ -60,22 +64,16 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 7),
-                child: ValueListenableBuilder(
-                  valueListenable: TransactionDb.instance.allTransactionList,
-                  builder: (context, List<TransactionModel> transactions, _) {
-                    final recentTransaction =
-                        transactions.reversed.take(4).toList();
-                    return ListView.builder(
-                      itemCount: recentTransaction.length,
+                  padding: const EdgeInsets.symmetric(horizontal: 7),
+                  child: Consumer<TransactionProvider>(
+                    builder: (context, value, child) => ListView.builder(
+                      itemCount: value.allTransactionlist.length,
                       itemBuilder: (ctx, index) {
-                        final transaction = recentTransaction[index];
+                        final transaction = value.allTransactionlist[index];
                         return TransactionsCard(transactionModel: transaction);
                       },
-                    );
-                  },
-                ),
-              ),
+                    ),
+                  )),
             ),
           ],
         ),

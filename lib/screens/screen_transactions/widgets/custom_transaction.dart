@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:week5/db/transactions/transaction_db.dart';
 import 'package:week5/models/category/category_model.dart';
 import 'package:week5/models/transaction/transaction_model.dart';
+import 'package:week5/provider/transaction_provider.dart';
 import 'package:week5/screens/screen_transactions/widgets/aleart_dialouge_widget.dart';
 import 'package:week5/screens/screen_transactions/widgets/edit_screen.dart';
 import 'package:week5/screens/screen_transactions/widgets/slide_widget.dart';
@@ -31,18 +33,17 @@ class _CustomTransactionState extends State<CustomTransaction> {
             selectDates(context);
           },
         ),
-        ValueListenableBuilder(
-          valueListenable: TransactionDb.instance.allTransactionList,
-          builder: (context, List<TransactionModel> transactions, _) {
+        Consumer<TransactionProvider>(
+          builder: (context, value, child) {
             if (widget.isIncomeSelected == true) {
-              allCustomTransactionList = transactions.where(
+              allCustomTransactionList = value.allTransactionlist.where(
                 (element) {
                   return element.type == CategoryType.income &&
                       element.date == newdate;
                 },
               ).toList();
             } else {
-              allCustomTransactionList = transactions.where(
+              allCustomTransactionList = value.allTransactionlist.where(
                 (element) {
                   return element.type == CategoryType.expense &&
                       element.date == newdate;
@@ -120,6 +121,7 @@ class _CustomTransactionState extends State<CustomTransaction> {
           transactionModel: transaction,
           functoin: () {
             TransactionDb.instance.deleteTransation(transaction);
+             Provider.of<TransactionProvider>(context,listen: false).refreshTransaction();
             Navigator.of(context).pop();
           },
         );
