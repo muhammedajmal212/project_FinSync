@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:week5/db/category/category_db.dart';
 import 'package:week5/db/transactions/transaction_db.dart';
 import 'package:week5/models/transaction/transaction_model.dart';
+import 'package:week5/provider/category_provider.dart';
 
 class DeleteCategoryPopup extends StatelessWidget {
   final String id;
@@ -67,7 +69,7 @@ class DeleteCategoryPopup extends StatelessWidget {
         .any((transaction) => transaction.categoryModel?.id == id);
     if (isCategoryUsedInTransaction) {
       Navigator.of(context).pop();
-      
+
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -89,6 +91,7 @@ class DeleteCategoryPopup extends StatelessWidget {
       );
     } else {
       CategoryDb().deleteCategory(id);
+      Provider.of<CategoryProvider>(context, listen: false).refreshCategory();
       Navigator.of(context).pop();
     }
   }

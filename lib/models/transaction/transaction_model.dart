@@ -42,4 +42,8 @@ class TransactionModel extends HiveObject {
     await delete();
 
   }
+   Future<void>deleteCategory()async{
+    await delete();
+
+  }
 }

@@ -1,5 +1,7 @@
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:week5/models/category/category_model.dart';
+import 'package:week5/provider/category_provider.dart';
 
 const categoryDbName = "categorydbname";
 
@@ -10,8 +12,6 @@ abstract class CategoryDbFunction {
 }
 
 class CategoryDb implements CategoryDbFunction {
-  
-
   CategoryDb.internal();
   static CategoryDb instance = CategoryDb.internal();
   factory CategoryDb() {
@@ -39,6 +39,7 @@ class CategoryDb implements CategoryDbFunction {
   Future<void> deleteCategory(String categoryID) async {
     final categoryDb = await Hive.openBox<CategoryModel>(categoryDbName);
     await categoryDb.delete(categoryID);
-    refreshUi();
+
+    await refreshUi();
   }
 }

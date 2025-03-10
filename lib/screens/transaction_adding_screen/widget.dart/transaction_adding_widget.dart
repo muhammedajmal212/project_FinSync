@@ -116,12 +116,14 @@ class _TransactionAddingWidgetState extends State<TransactionAddingWidget> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: AppTextFormField(
+            
                 textEditingController: descriptionController,
                 hintText: "Description (Optional)"),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
             child: AppTextFormField(
+              lengthLimit: 8,
                 keyboardType: TextInputType.number,
                 validatorKey: (value) {
                   if (value == null || value.isEmpty) {

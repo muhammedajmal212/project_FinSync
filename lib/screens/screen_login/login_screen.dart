@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:week5/widgets/app_button.dart';
@@ -17,47 +18,44 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
-          title: const Text(
-            "Login Screen",
-            style: TextStyle(color: Colors.white),
-            
-          ),
+        title: const Text(
+          "Login Screen",
+          style: TextStyle(color: Colors.white),
         ),
+      ),
       body: SafeArea(
-      
-          child: Center(
-            child: Form(
-              key: formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 10, left: 10),
-                    child: AppTextFormField(
-                      validatorKey: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Please Enter Your Username";
-                        }
-                        return null;
-                      },
-                      textEditingController: userNameController,
-                      hintText: "Username",
-                    ),
+        child: Center(
+          child: Form(
+            key: formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 10, left: 10),
+                  child: AppTextFormField(
+                    validatorKey: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please Enter Your Username";
+                      }
+                      return null;
+                    },
+                    textEditingController: userNameController,
+                    hintText: "Username",
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  AppButton(
-                      onTap: () {
-                        gotoBottomNavBarScreen(context);
-                      },
-                      text: "Login"),
-                ],
-              ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                AppButton(
+                    onTap: () {
+                      gotoBottomNavBarScreen(context);
+                    },
+                    text: "Login"),
+              ],
             ),
           ),
         ),
-      
+      ),
     );
   }
 

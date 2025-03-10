@@ -9,6 +9,7 @@ class TransactionsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      
       elevation: 6,
       // color:const Color.fromARGB(255, 209, 247, 243),
       child: ListTile(
