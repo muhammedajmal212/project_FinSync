@@ -2,10 +2,10 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:week5/db/category/category_db.dart';
 import 'package:week5/db/transactions/transaction_db.dart';
-import 'package:week5/screens/screen_category/category_screen.dart';
-import 'package:week5/screens/screen_home/home_screen.dart';
-import 'package:week5/screens/screen_settings/settings_screen.dart';
-import 'package:week5/screens/screen_transactions/screen_transactions.dart';
+import 'package:week5/view/screen_category/category_screen.dart';
+import 'package:week5/view/screen_home/home_screen.dart';
+import 'package:week5/view/screen_settings/settings_screen.dart';
+import 'package:week5/view/screen_transactions/screen_transactions.dart';
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({super.key});

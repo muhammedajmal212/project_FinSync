@@ -15,6 +15,9 @@ class AppRadioButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RadioListTile(
+      contentPadding: EdgeInsets.zero,
+      dense: true,
+      visualDensity:  VisualDensity.compact,
       activeColor:const Color(0xFF80CBC4),
       title: title,
       value: newvalue,

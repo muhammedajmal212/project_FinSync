@@ -23,6 +23,9 @@ class IncomeText extends StatelessWidget {
           padding: EdgeInsets.only(left: 5),
           child: Text(
             "Income",
+            maxLines: 1,
+            softWrap: false,
+            overflow: TextOverflow.ellipsis,
             style: TextStyle(
               fontSize: 20,
               color: Colors.black,

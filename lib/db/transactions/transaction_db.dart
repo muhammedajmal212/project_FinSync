@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:week5/models/transaction/transaction_model.dart';
+import 'package:week5/model/transaction/transaction_model.dart';
 
 const String transactionDbName = "TRANSACTION_DB_NAME";
 

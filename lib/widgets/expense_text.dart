@@ -23,6 +23,9 @@ class ExpenseText extends StatelessWidget {
           padding: EdgeInsets.only(left: 5),
           child: Text(
             "Expense",
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            softWrap: false,
             style: TextStyle(
               fontSize: 20,
             ),

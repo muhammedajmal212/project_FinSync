@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:week5/models/category/category_model.dart';
-import 'package:week5/models/transaction/transaction_model.dart';
+import 'package:week5/model/category/category_model.dart';
+import 'package:week5/model/transaction/transaction_model.dart';
 
 class TransactionsCard extends StatelessWidget {
   final TransactionModel transactionModel;

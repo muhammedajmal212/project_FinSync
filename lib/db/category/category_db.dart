@@ -1,7 +1,7 @@
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:week5/models/category/category_model.dart';
-import 'package:week5/provider/category_provider.dart';
+import 'package:week5/model/category/category_model.dart';
+import 'package:week5/controller/category_controller.dart';
 
 const categoryDbName = "categorydbname";
 

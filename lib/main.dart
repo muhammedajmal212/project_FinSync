@@ -2,11 +2,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:week5/models/category/category_model.dart';
-import 'package:week5/models/transaction/transaction_model.dart';
-import 'package:week5/provider/category_provider.dart';
-import 'package:week5/provider/transaction_provider.dart';
-import 'package:week5/screens/splash_Screen/splash_screen.dart';
+import 'package:week5/model/category/category_model.dart';
+import 'package:week5/model/transaction/transaction_model.dart';
+import 'package:week5/controller/category_controller.dart';
+import 'package:week5/controller/transaction_controller.dart';
+import 'package:week5/view/splash_Screen/splash_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,6 +35,7 @@ Future<void> main() async {
         ),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         builder: (context, child) {
           return MediaQuery(
               data: MediaQuery.of(context)
